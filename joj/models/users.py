@@ -12,6 +12,7 @@ class Users(BASE):
 
     privileges=relationship("Privileges")
     informations=relationship("Informations")
+    articles=relationship("Articles")
 
     def __init__(self,username=None,email=None,password=None,description=None):
         self.username=username
