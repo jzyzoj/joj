@@ -7,4 +7,6 @@ class Comments(BASE):
     id=Column(Integer,primary_key=True)
     user_id=Column(Integer,ForeignKey("Users.id"),index=True)
     problem_id=Column(Integer,ForeignKey("Problems.id"))
+    
+
 
