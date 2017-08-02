@@ -15,5 +15,4 @@ session=Session()
 
 import models,views,solver
 
-print("import models")
 

@@ -1,4 +1,4 @@
-from joj import BASE
+from joj import BASE,session
 from sqlalchemy import Column,Integer,String,Text,ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -11,7 +11,7 @@ class User(BASE):
     description=Column(Text)
 
     privilege=relationship("Privilege")
-    informations=relationship("User_Information")
+    informations=relationship("Informations")
 
     def __init__(self,username=None,email=None,password=None,description=None):
         self.username=username
@@ -22,7 +22,19 @@ class User(BASE):
     def __repr__(self):
         return "<Username:%s Password:%s Email:%s>"%(self.username,self.password,self.email)
 
-print("lalala")
+    def Save(self):
+        session.add(self)
+        session.commit()
+
+    def Update(self,email=None,password=None,description=None):
+        if email!=None:
+            self.email=email
+        if password!=None:
+            self.password=password
+        if description!=None:
+            self.password=description
+        session.commit()
+
 
 class Privilege(BASE):
     __tablename__="Privilege"
@@ -88,8 +100,5 @@ class Informations(BASE):
         self.submit_num+=submit_num
         self.ac_num+=ac_num
         session.commit()
-
-
-
 
 
