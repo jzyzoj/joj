@@ -1,5 +1,4 @@
-from joj import db
+from joj import BASE,engine
 
-db.drop_all()
-db.create_all()
+BASE.metadata.create_all(bind=engine)
 
