@@ -3,6 +3,7 @@ from sqlalchemy import Boolean,Integer,String,Column,Text
 from users import User
 from joj.configer import Judge_Status
 import datetime
+from sqlalchemy import ForeignKey
 
 class Status(BASE):
     __tablename__="Status"
@@ -17,6 +18,10 @@ class Status(BASE):
 
     user_id=Column(Integer,index=True,nullable=False)
     problem_id=Column(Integer,index=True,nullable=False)
+    constest_id=Column(
+            Integer,
+            ForeignKey('contests.id')
+            )
 
     def __init__(self,dicter):
        self.scores=dicter['scores']
