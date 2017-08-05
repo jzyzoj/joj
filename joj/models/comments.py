@@ -1,6 +1,6 @@
 from joj import BASE,session
-from user import User
-from sqlalchemy import Column,Integer,String,ForeignKey
+from users import User
+from sqlalchemy import Column,Text,Integer,String,ForeignKey
 from sqlalchemy.orm import relationship
 
 
@@ -8,7 +8,7 @@ class Comments(BASE):
     __tablename__="Comments"
     id=Column(Integer,primary_key=True)
     contents=Column(Text)
-    date=Column(String)
+    date=Column(String(20))
     
     user_id=Column(Integer,index=True)
     article_id=Column(Integer,ForeignKey("Articles.id"),index=True)
@@ -33,9 +33,9 @@ class Articles(BASE):
     id=Column(Integer,primary_key=True)
     title=Column(Text)
     contents=Column(Text)
-    date=Column(String)
+    date=Column(String(20))
 
-    user_id=Column(Integer,ForeignKey("Users.id"),index=True)
+    user_id=Column(Integer,ForeignKey("User.id"),index=True)
     problem_id=Column(Integer,index=True)
 
     the_comments=relationship("Comments")

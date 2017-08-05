@@ -2,8 +2,8 @@ from joj import BASE,session
 from sqlalchemy import Column,Integer,String,Text,ForeignKey
 from sqlalchemy.orm import relationship
 
-class Users(BASE):
-    __tablename__="Users"
+class User(BASE):
+    __tablename__="User"
     id=Column(Integer,primary_key=True)
     username=Column(String(40),unique=True,index=True)
     email=Column(String(40))
@@ -40,7 +40,7 @@ class Users(BASE):
 class Privileges(BASE):
     __tablename__="Privileges"
     id=Column(Integer,primary_key=True)
-    user_id=Column(Integer,ForeignKey("Users.id"),index=True)
+    user_id=Column(Integer,ForeignKey("User.id"),index=True)
     value=Column(Integer)
     
     def __init__(self,user_id=None,value=0):
@@ -80,7 +80,7 @@ class Privileges(BASE):
 class Informations(BASE):
     __tablename__="User_Informations"
     id=Column(Integer,primary_key=True)
-    user_id=Column(Integer,ForeignKey("Users.id"),index=True)
+    user_id=Column(Integer,ForeignKey("User.id"),index=True)
     submit_num=Column(Integer)
     ac_num=Column(Integer)
 
