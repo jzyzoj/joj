@@ -1,6 +1,7 @@
 from joj import BASE,session
 from sqlalchemy import Column,Integer,String,Text,ForeignKey
 from sqlalchemy.orm import relationship
+from joj.models.contest import Con_ass_User
 
 class User(BASE):
     __tablename__="User"
@@ -13,6 +14,11 @@ class User(BASE):
     privileges=relationship("Privileges")
     informations=relationship("Informations")
     articles=relationship("Articles")
+    Contests=relationship(
+            "Contest",
+            secondary=Con_ass_User,
+            back_populates="Players"
+            )
 
     def __init__(self,dicter):
         self.username=dicter['username']
