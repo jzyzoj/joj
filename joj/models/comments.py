@@ -40,7 +40,7 @@ class Articles(BASE):
     date=Column(String(20))
  
     user_id=Column(Integer,ForeignKey("User.id"),index=True)
-    problem_id=Column(Integer,index=True)
+    problem_id=Column(Integer,ForeignKey("Problem.id"),index=True)
 
     the_comments=relationship("Comments")
 
