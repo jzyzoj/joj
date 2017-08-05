@@ -14,11 +14,11 @@ class User(BASE):
     informations=relationship("Informations")
     articles=relationship("Articles")
 
-    def __init__(self,username=None,email=None,password=None,description=None):
-        self.username=username
-        self.email=email
-        self.password=password
-        self.description=description
+    def __init__(self,dicter):
+        self.username=dicter['username']
+        self.email=dicter['email']
+        self.password=dicter['password']
+        self.description=dicter['description']
 
     def __repr__(self):
         return "<Username:%s Password:%s Email:%s>"%(self.username,self.password,self.email)
@@ -43,9 +43,9 @@ class Privileges(BASE):
     user_id=Column(Integer,ForeignKey("User.id"),index=True)
     value=Column(Integer)
     
-    def __init__(self,user_id=None,value=0):
-        self.user_id=user_id
-        self.value=value
+    def __init__(self,dicter):
+        self.user_id=dicter['user_id']
+        self.value=dicter['value']
 
     def __repr__(self):
         ret="<Id:%d Privileges:"%self.user_id
@@ -56,6 +56,10 @@ class Privileges(BASE):
                 ret+='0'
         ret+='>'
         return ret
+
+    def Save(self):
+        session.add(self)
+        session.commit()
 
     def Query(self,value):
         return (self.value&value)==value
@@ -84,18 +88,22 @@ class Informations(BASE):
     submit_num=Column(Integer)
     ac_num=Column(Integer)
 
-    def __init__(self,user_id=None,submit_num=0,ac_num=0):
-        self.user_id=user_id
-        self.submit_num=submit_num
-        self.ac_num=ac_num
+    def __init__(self,dicter):
+        self.user_id=dicter['user_id']
+        self.submit_num=dicter['submit_num']
+        self.ac_num=dicter['ac_num']
 
     def __repr__(self):
         return "<Id:%d Status:%d/%d>"%(self.user_id,self.ac_num,self.submit_num)
 
+    def Save(self):
+        session.add(self)
+        session.commit()
+
     def Ac_rate(self):
         if self.submit_num==0:
             return "No submittion yet."
-        return 1.0*ac_num/submit_num
+        return ('%.2f')%(1.0*ac_num/submit_num*100)
 
     def Update(self,submit_num,ac_num):
         self.submit_num+=submit_num

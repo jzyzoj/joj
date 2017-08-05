@@ -23,23 +23,23 @@ class Status(BASE):
        self.results=dicter['results']
        self.user_id=dicter['user_id']
        self.problem_id=dicter['problem_id']
-       self.date=datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+       self.date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
        self.ispublic=dicter['ispublic']
        self.code_location=dicter['codeloc']
 
     def __repr__(self):
-        strr=Judge_Status[results]
-        return "<Pro:%d User:%d Status:%s Scores:%d/100 Date:%s>"%(problem_id,user_id,strr,scores,date)
+        strr=Judge_Status[self.results]
+        return "<Pro:%d User:%d Status:%s Scores:%d/100 Date:%s>"%(self.problem_id,self.user_id,strr,self.scores,self.date)
 
-    def save(self):
+    def Save(self):
         session.add(self)
         session.commit()
 
-    def delete(self):
+    def Delete(self):
         session.delete(self)
         session.commit()
         
-    def view_status(self,ispublic):
+    def View_status(self,ispublic):
         self.ispublic=ispublic
         session.commit()
 
