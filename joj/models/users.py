@@ -1,7 +1,37 @@
-from joj import BASE,session
-from sqlalchemy import Column,Integer,String,Text,ForeignKey
+from sqlalchemy import Column,Double,Integer,String,Text,ForeignKey
 from sqlalchemy.orm import relationship
 from joj.models.contest import Con_ass_User
+from joj import BASE,solver
+from joj.configer import Online_time
+from random import randint
+
+
+class Session():
+    __tablename__="Session"
+    id=Column(String(55),primary_key=True)
+    user_id=Column(Integer,index=True,ForeignKey("User.id"))
+    login_time=Column(Double)
+
+    user=relationship("User")
+
+    def __init__(self,dicter):
+        user_id=dicter["user_id"]
+        login_time=solver.Get_cur_time(True)
+        id=str(randint(1,1e51))
+        
+    def __repr__(self):
+        return "<Session:%d user:%d>"%(self.id,user_id)
+
+    def Delete(self):
+        solver.Delete(self)
+
+    def is_valid(self):
+        now=solver.Get_cur_time(True)
+        if now-login_time>=Online_time:
+            solver.Delete(Session,self)
+            return False
+        return True
+
 
 class User(BASE):
     __tablename__="User"
@@ -30,18 +60,20 @@ class User(BASE):
         return "<Username:%s Password:%s Email:%s>"%(self.username,self.password,self.email)
 
     def Save(self):
-        session.add(self)
-        session.commit()
+        solver.Add(self)
 
-    def Update(self,email=None,password=None,description=None):
-        if email!=None:
+    def Update(self,username=None,email=None,password=None)
+        if username:
+            self.username=username
+        if email:
             self.email=email
-        if password!=None:
+        if password:
             self.password=password
-        if description!=None:
-            self.password=description
-        session.commit()
+        solver.Update()
 
+    def Delete(self)
+        self.privileges=0
+        solver.Update()
 
 class Privileges(BASE):
     __tablename__="Privileges"
@@ -64,28 +96,26 @@ class Privileges(BASE):
         return ret
 
     def Save(self):
-        session.add(self)
-        session.commit()
+        solver.Add(self)
 
     def Query(self,value):
         return (self.value&value)==value
 
     def Authorize(self,value):
         self.value|=value
-        session.commit()
+        solver.Update(Privileges,self)
 
-    def Delete(self,value):
+    def Cancel_Privilege(self,value):
         self.value|=value
         self.value^=value
-        session.commit()
+        solver.Update()
 
     def Replace(self,value):
         self.value=value
-        session.commit()
+        solver.Update()
 
     def Show(self):
         return self.value
-
 
 class Informations(BASE):
     __tablename__="User_Informations"
@@ -103,8 +133,7 @@ class Informations(BASE):
         return "<Id:%d Status:%d/%d>"%(self.user_id,self.ac_num,self.submit_num)
 
     def Save(self):
-        session.add(self)
-        session.commit()
+        solver.Add(self)
 
     def Ac_rate(self):
         if self.submit_num==0:
@@ -114,6 +143,6 @@ class Informations(BASE):
     def Update(self,submit_num,ac_num):
         self.submit_num+=submit_num
         self.ac_num+=ac_num
-        session.commit()
+        solver.Update()
 
 

@@ -11,7 +11,6 @@ engine=create_engine(DB_CON_STR,convert_unicode=True)
 
 BASE=declarative_base()
 Session=sessionmaker(bind=engine)
-session=Session()
 
 import models,views,solver
 

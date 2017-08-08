@@ -1,4 +1,4 @@
-from joj import BASE,session
+from joj import BASE,solver
 from sqlalchemy import Column, Integer, String, Text 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
@@ -42,8 +42,7 @@ class Problem(BASE):
         return '< Pro_id=%d , Pro_Name=%s >' %(self.id, self.Name)
 
     def save(self):
-        session.add(self)
-        session.commit()
+        solver.Add(self)
 
     def __init__(self, P_data):
         self.Name=P_data['Name']
@@ -56,7 +55,6 @@ class Problem(BASE):
         self.Judge_type = P_data['Judge']
         self.ACnum = 0
         self.SUBnum= 0
-        self.save()
 
 
     def update(self, P_data):
@@ -70,7 +68,7 @@ class Problem(BASE):
         self.Judge_type = P_data['Judge']
         self.ACnum = 0 
         self.SUBnum = 0
-        self.save()
+        solver.Update()
 
 
 class Hint(BASE):
@@ -87,13 +85,11 @@ class Hint(BASE):
 
     def __init__(self, Name):
         self.Name=Name
-        self.save()
 
     def __repr__(self):
         return '< Hint_id=%d , Hint_Name=%s >' %(self.id, self.Name)
 
     def save(self):
-        session.add(self)
-        session.commit()
+        self.Update()
 
 

@@ -1,4 +1,4 @@
-from joj import BASE,session
+from joj import BASE,solver
 from users import User
 from sqlalchemy import Column,Text,Integer,String,ForeignKey
 from sqlalchemy.orm import relationship
@@ -17,19 +17,17 @@ class Comments(BASE):
         self.user_id=dicter['user_id']
         self.article_id=dicter['article_id']
         self.contents=dicter['contents']
-        self.date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.date=solver.Get_cur_time()
 
     def __repr__(self):
         talker=session.query(User).filter(id==user_id).first()
         return "<%s from %s:%r>"%(date,talker.username,contents)
 
     def Save(self):
-        session.save(self)
-        session.commit()
+        solver.Add(self)
 
     def Delete(self):
-        session.delete(self)
-        session.commit()
+        solver.Delete(self)
 
 
 class Articles(BASE):
@@ -47,7 +45,7 @@ class Articles(BASE):
     def __init__(self,dicter):
         self.title=dicter['title']
         self.contents=dicter['contents']
-        self.date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.date=solver.Get_cur_time()
         self.user_id=dicter['user_id']
         self.problem_id=dicter['problem_id']
 
@@ -55,15 +53,12 @@ class Articles(BASE):
         return "<title:%r Date:%s>"%(self.title,self.date)
 
     def Save(self):
-        session.add(self)
-        session.commit()
+        self.Add(self)
 
     def Delete(self):
         for i in the_comments:
             i.Delete()
-        session.delete(self)
-        session.commit()
-
-
+        solver.Delete(self)
+    
 
 

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
-from joj import BASE,session
+from joj import BASE,solver
 from sqlalchemy.schema import Table
 
 Con_ass_Pro = Table('Con_ass_Pro', BASE.metadata,
@@ -36,10 +36,6 @@ class Contest(BASE):
 
     Condition = Column(String(40))
 
-    def save(self):
-        session.add(self)
-        session.commit()
-
     def __init__(self,C_data):
         self.Title = C_data['Title']
         self.Announcement = C_data['Ann']
@@ -47,3 +43,6 @@ class Contest(BASE):
         self.Condition = C_data['Con']
         self.save()
     
+    def save(self):
+        self.Add(self)
+
